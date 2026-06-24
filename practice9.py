@@ -1,77 +1,72 @@
-python
 # -*- coding: utf-8 -*-
 """
-Вариант 1.
-Задание 1: программа для вычисления площади разных геометрических фигур.
-Задание 2: для 3 массивов найти сумму и среднее арифметическое.
+Вариант 1 .
+Задание 1: сумма и количество положительных элементов над главной диагональю.
+Задание 2: в каждой строке матрицы поменять местами максимальный и минимальный
+           элементы с первым и последним элементами строки соответственно.
 """
-
-import math
-
 print("=" * 60)
-print("ЗАДАНИЕ 1: Площади геометрических фигур")
+print("ЗАДАНИЕ 1: Сумма и число положительных элементов над главной диагональю")
 print("=" * 60)
 
-def rectangle_area(a, b):
-    """Площадь прямоугольника со сторонами a и b."""
-    return a * b
+N = int(input("Введите размер квадратной матрицы N: "))
 
-def triangle_area(base, height):
-    """Площадь треугольника по основанию и высоте."""
-    return 0.5 * base * height
+A = []
+print("Введите элементы матрицы построчно:")
+for i in range(N):
+    row = []
+    for j in range(N):
+        row.append(int(input(f"A[{i}][{j}] = ")))
+    A.append(row)
 
-def circle_area(radius):
-    """Площадь круга по радиусу."""
-    return math.pi * radius ** 2
+print("\nИсходная матрица A:")
+for row in A:
+    print(" ".join(map(str, row)))
 
-print("Выберите фигуру:")
-print("1 - прямоугольник")
-print("2 - треугольник (по основанию и высоте)")
-print("3 - круг")
+sum_positive = 0
+count_positive = 0
+for i in range(N):
+    for j in range(N):
+        if i < j and A[i][j] > 0:
+            sum_positive += A[i][j]
+            count_positive += 1
 
-choice = int(input("Ваш выбор (1/2/3): "))
-
-if choice == 1:
-    a = float(input("Введите длину стороны a: "))
-    b = float(input("Введите длину стороны b: "))
-    s = rectangle_area(a, b)
-    print(f"Площадь прямоугольника = {s:.2f}")
-elif choice == 2:
-    base = float(input("Введите длину основания: "))
-    height = float(input("Введите высоту: "))
-    s = triangle_area(base, height)
-    print(f"Площадь треугольника = {s:.2f}")
-elif choice == 3:
-    radius = float(input("Введите радиус: "))
-    s = circle_area(radius)
-    print(f"Площадь круга = {s:.2f}")
-else:
-    print("Неверный выбор!")
+print(f"\nСумма положительных элементов над главной диагональю: {sum_positive}")
+print(f"Количество положительных элементов над главной диагональю: {count_positive}")
 
 print("\n" + "=" * 60)
-print("ЗАДАНИЕ 2: Сумма и среднее арифметическое для 3 массивов")
+print("ЗАДАНИЕ 2: В каждой строке матрицы поменять местами")
+print("максимальный элемент с первым, минимальный – с последним")
 print("=" * 60)
 
-def sum_and_avg(arr):
-    """Возвращает сумму и среднее арифметическое списка."""
-    total = sum(arr)
-    avg = total / len(arr) if len(arr) > 0 else 0
-    return total, avg
+N2 = int(input("Введите количество строк N: "))
+M = int(input("Введите количество столбцов M: "))
 
-arrays = []
-for i in range(3):
-    print(f"\nВвод массива {i+1}:")
-    n = int(input("Введите размер массива (не более 15): "))
-    if n > 15:
-        n = 15
-        print("Размер уменьшен до 15.")
-    arr = []
-    for j in range(n):
-        arr.append(int(input(f"Введите элемент {j+1}: ")))
-    arrays.append(arr)
+B = []
+print("Введите элементы матрицы построчно:")
+for i in range(N2):
+    row = []
+    for j in range(M):
+        row.append(int(input(f"B[{i}][{j}] = ")))
+    B.append(row)
 
-for idx, arr in enumerate(arrays, start=1):
-    total, avg = sum_and_avg(arr)
-    print(f"\nМассив {idx}: {arr}")
-    print(f"Сумма элементов = {total}")
-    print(f"Среднее арифметическое = {avg:.2f}")
+print("\nИсходная матрица B:")
+for row in B:
+    print(" ".join(map(str, row)))
+
+for i in range(N2):
+    max_idx = 0
+    min_idx = 0
+    for j in range(1, M):
+        if B[i][j] > B[i][max_idx]:
+            max_idx = j
+        if B[i][j] < B[i][min_idx]:
+            min_idx = j
+    
+    B[i][0], B[i][max_idx] = B[i][max_idx], B[i][0]
+    
+    B[i][M-1], B[i][min_idx] = B[i][min_idx], B[i][M-1]
+
+print("\nПреобразованная матрица B:")
+for row in B:
+    print(" ".join(map(str, row)))
